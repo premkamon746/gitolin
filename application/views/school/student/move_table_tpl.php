@@ -11,8 +11,8 @@
 							<table  class="table table-bordered table-striped table-condensed flip-content">
 								<thead>
 									<tr>
-										<td>ชื่อ นามสกุล</td>
-										<td>วันที่ทำรายการ</td>
+										<td>ชื่อ</td>
+										<td>นามสกุล</td>
 										<td>ลบ</td>
 									</tr>
 								</thead>
@@ -20,10 +20,11 @@
 							<?php foreach ($sc->result() as $s) {?>
 								<tr class="ui-state-default" id="<?=$s->id?>">
 									<td class='content_name'  style="cursor:pointer;" >
-										 <a href='javascript:void(0);' data-pk="<?=$s->id?>" ><?=$s->firstname?> <?=$s->lastname?></a>
+										 <a href='javascript:void(0);' data-pk="<?=$s->id?>" ><?=$s->firstname?> </a>
 									</td>
-									<td width="100" align="center" >
-										 <i class="glyphicon glyphicon-remove-circle fa-lg" style="cursor: pointer;color:red;" onclick="deleteClassRoom(<?=$s->id ?>)" ></i>
+
+									<td class='content_name'  style="cursor:pointer;" >
+										 <a href='javascript:void(0);' data-pk="<?=$s->id?>" ><?=$s->lastname?> </a>
 									</td>
 									<td width="100" align="center" >
 										 <i class="glyphicon glyphicon-remove-circle fa-lg" style="cursor: pointer;color:red;" onclick="deleteClassRoom(<?=$s->id ?>)" ></i>

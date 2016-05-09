@@ -8,12 +8,18 @@
 <script type="text/javascript" src="<?=base_url();?>assets/plugins/select2/select2.min.js"></script>
 <script type="text/javascript" src="<?=base_url();?>assets/plugins/jquery-multi-select/js/jquery.multi-select.js"></script>
 
+<script src="<?=base_url();?>assets/js/jquery.mockjax.js"></script>
+<script src="<?=base_url();?>assets/js/bootstrap-typeahead.js"></script>
+
 <script src="<?=base_url();?>assets/scripts/core/app.js"></script>
 <script src="<?=base_url();?>assets/scripts/custom/components-dropdowns.js"></script>
-
+<style>
+	.row{
+		padding:20px;
+	}
+</style>
 <div class="row">
-<div class="col-md-12">
-
+<div class="col-md-6">
 <!-- BEGIN PORTLET-->
 <div class="portlet box green">
 	<div class="portlet-title">
@@ -37,64 +43,35 @@
 
     <div class="row">
 
-        <div class="col-md-3">
-          <label class="control-label ">ย้ายจาก</label>
-          <select class="bs-select form-control">
-              <option>Mustard</option>
-              <option>Ketchup</option>
-              <option>Relish</option>
-          </select>
+	        <div class="col-md-12">
+	          <label class="control-label ">ชั้นเรียน</label>
+	          <select id="level" class="bs-select form-control">
+	              <? foreach ($grade->result() as $g) : ?>
+								<option value="<?=$g->id?>"><?=$g->name?></option>
+								<? endforeach ?>
+	          </select>
+	        </div>
+	      <div class="col-md-12">
+	        <label class="control-label ">ห้อง</label>
+					<select id="room" class="bs-select form-control">
+					</select>
+	      </div>
+        <div class="col-md-12">
+          <label class="control-label ">นักเรียน</label>
+          <input id="demo4" type="text" class="col-md-12 form-control" placeholder="ค้นหานักเรียน..." autocomplete="off" />
         </div>
 
-      <div class="col-md-3">
-        <label class="control-label ">ไปที่</label>
-        <select class="bs-select form-control">
-            <option>Mustard</option>
-            <option>Ketchup</option>
-            <option>Relish</option>
-        </select>
-      </div>
-    </div>
-
-		<form action="index.html" class="form-horizontal form-row-seperated">
-			<div class="form-body">
-				<div class="form-group">
-
-					<label class="control-label col-md-3">Default</label>
-					<div class="col-md-9">
-
-						<select multiple="multiple" class="multi-select" id="my_multi_select1" name="my_multi_select1[]">
-							<option>Dallas Cowboys</option>
-							<option>New York Giants</option>
-							<option>Philadelphia Eagles</option>
-							<option>Washington Redskins</option>
-							<option>Chicago Bears</option>
-							<option>Detroit Lions</option>
-							<option>Green Bay Packers</option>
-							<option>Minnesota Vikings</option>
-							<option>Atlanta Falcons</option>
-							<option>Carolina Panthers</option>
-							<option>New Orleans Saints</option>
-							<option>Tampa Bay Buccaneers</option>
-							<option>Arizona Cardinals</option>
-							<option>St. Louis Rams</option>
-							<option>San Francisco 49ers</option>
-							<option>Seattle Seahawks</option>
-						</select>
+				<div class="col-md-12">
+          <label class="control-label ">รายชื่อนักเรียน</label>
+        	<div style="border:1px solid #ccc;height:400px;">
+						<ul class="changeTo">
+						</ul>
 					</div>
-				</div>
-			</div>
-			<div class="form-actions fluid">
-				<div class="row">
-					<div class="col-md-12">
-						<div class="col-md-offset-3 col-md-9">
-							<button type="submit" class="btn green"><i class="fa fa-check"></i> Submit</button>
-							<button type="button" class="btn default">Cancel</button>
-						</div>
-					</div>
-				</div>
-			</div>
-		</form>
+        </div>
+
+  </div>
+		<br/><br/><br/>
+
 		<!-- END FORM-->
 	</div>
 </div>
@@ -102,10 +79,26 @@
 </div>
 </div>
 <!-- END PAGE CONTENT-->
-<script>
-        jQuery(document).ready(function() {
-           // initiate layout and plugins
-           App.init();
-           ComponentsDropdowns.init();
-        });
+		<script>
+        $(document).ready(function(){
+
+          $('#demo4').typeahead({
+             ajax: '<?=site_url();?>school/student/getstd',
+             displayField: 'fullname',
+             onSelect: function(item) {
+                console.log(item.value);
+            }
+         });
+
+          $('#level').change(function(){
+              var url ='<?=base_url()?>school/student/getroom/'+$(this).val();
+              $('#room').html("");
+              $.getJSON(url,function(data){
+                  $(data).each(function(i,el){
+                      $('#room').append("<option value='"+el.id+"'>"+el.name+"</option>");
+                  })
+              })
+          })
+
+				})
     </script>

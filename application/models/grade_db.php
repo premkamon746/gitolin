@@ -30,7 +30,6 @@
 		function getAll($school_id){
 			$sql = "select *,(select count(*) from class_room where grade_id = s.id ) as room_num from $this->table s
 							where s.school_id = $school_id order by s.sort,s.id";
-
 			return $this->db->query($sql);
 		}
 

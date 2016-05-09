@@ -6,6 +6,7 @@ class Student extends MY_Controller {
 	function __construct(){
 		parent::__construct();
 		$this->load->model("student_db");
+		$this->load->model("grade_db");
 	}
 
 	public function index($classroom_id,$class_room_name)
@@ -88,9 +89,24 @@ class Student extends MY_Controller {
 
 	function move(){
 		$data = array();
-		
+
+		$data["grade"] = $this->grade_db->getAll(2);
 		$render["content"] = $this->load->view('school/student/move_tpl',$data, true);
 		$this->load->view("school/layout/layout_tpl",$render,false);
+	}
+
+	function getroom($id){
+		$result = $this->db->get_where("class_room",array("grade_id"=>$id));
+		echo json_encode($result->result());
+	}
+
+	function getstd(){
+		if($query = $this->input->get('query')){
+			$this->db->like("firstname",$query);
+			$this->db->select("id, CONCAT(firstname,' ',lastname) as fullname", FALSE);
+			$query = $this->db->get('student');
+			if($query->num_rows() > 0) echo json_encode($query->result());
+		}
 	}
 
 
